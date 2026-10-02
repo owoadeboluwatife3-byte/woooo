@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Tracker App</title>
+    <link rel="stylesheet" href="./studentTacker.css">
+</head>
+<body>
+    <h1>Student Tracker</h1>
+     <ul id="studentList">
+        
+       
+     </ul>
+       <p id="report"></p>
+
+     <div>
+
+      
+      <input id="newStudentName" type="text" placeholder="Enter student's name">
+      <input id="newStudentScore" type="text" placeholder="enter student's score">
+
+      <button id="addStudentBtn">Add Student</button>
+
+      <button id="passBtn">Passed Students</button>
+     </div>
+
+
+      
+
+
+
+
+  <script>
+//    Week 1 Project — Build a Student Score Tracker
+// This is a real mini-app. No tutorials, no copy-pasting. You build it yourself using everything from this week.
+
+// The scenario
+// You're building a simple student score tracker for a teacher. The teacher needs to see which students passed and which failed, and get a summary of the results.
+
+// What you must build
+// A single index.html file that does the following:
+// 1. Has this data hardcoded in JavaScript:
+// javascriptconst students = [
+//   { name: "Amina", score: 45 },
+//   { name: "Tunde", score: 82 },
+//   { name: "Chidi", score: 60 },
+//   { name: "Ngozi", score: 38 },
+//   { name: "Emeka", score: 91 }
+// ];
+// 2. On page load, displays:
+
+// A list of all students with their scores
+// Each student shown as: "Tunde — 82 points"
+// Students who scored 50 and above shown in green
+// Students who scored below 50 shown in red
+
+
+
+ const  students = [
+  { name: "Paul", score: 45 ,},
+  { name: "Peter", score: 82 },
+  { name: "Dave", score: 60 },
+  { name: "Yusuff", score: 38 },
+  { name: "Clinton", score: 91 },
+  { name: "Qodri", score: 74 },
+  { name: "Adams", score: 50 },
+  { name: "Ayoola", score: 18 },
+  
+  
+];
+
+const  fruits = [
+  { name: "orange", score:' A1' ,},
+  { name: "pAWPAW", score: 'B2' },
+  { name: "mANGO", score: 'D7' },
+ 
+  
+  
+];
+
+
+
+students.push({ name: "Ade", score: 90 })
+const studentList = document.getElementById('studentList')
+const newStudentName = document.getElementById('newStudentName')
+const newStudentScore = document.getElementById('newStudentScore')
+const addStudentBtn = document.getElementById('addStudentBtn')
+const passBtn = document.getElementById('passBtn')
+const report = document.getElementById('report')
+
+// const displayList = (array) => {
+//      studentList.innerHTML = ''
+//     array.forEach((x)=>{
+//     const li = document.createElement('li')
+//     li.innerText = `${x.name} -  ${x.score}`
+//     li.style.color = x.score >= 50? 'green': 'red'
+//     studentList.append(li)
+//  })
+
+// }
+
+const displayList = (array) => {
+    studentList.innerHTML = ''
+
+    array.forEach((student, index) => {
+        const li = document.createElement('li')
+
+        li.innerText = `${student.name} - ${student.score}`
+
+        li.style.color = student.score >= 50 ? 'green' : 'red'
+
+    
+        const deleteBtn = document.createElement('button')
+        deleteBtn.innerText = 'Delete'
+
+    
+        deleteBtn.addEventListener('click', () => {
+            students.splice(index, 1)
+            displayList(students)
+        })
+
+        li.append(deleteBtn)
+
+        studentList.append(li)
+
+        
+    })
+    
+}
+
+displayList(students)
+
+const passed = students.filter((student)=>student.score >= 50)
+console.log(passed)
+
+report.innerText = `${passed.length} students passed out of ${students.length}`
+
+passBtn.addEventListener('click', ()=>{
+  displayList(passed)
+})
+
+ 
+  const addNewStudent = (studentName,studentScore) => {
+       studentName = newStudentName.value
+        studentScore = Number(newStudentScore.value) 
+    const newStudent = {
+       name : studentName,
+       score: studentScore
+    }
+    
+   const allStudents = [...students,newStudent]
+
+    
+    displayList(allStudents)
+
+   newStudentName.value = ''
+   newStudentScore.value = ''
+
+    report.innerText = `${passed.length} students passed out of ${allStudents.length}`
+   
+  }
+
+
+
+  addStudentBtn.addEventListener('click',()=>{
+    addNewStudent()
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+  </script>
+</body>
+</html>
