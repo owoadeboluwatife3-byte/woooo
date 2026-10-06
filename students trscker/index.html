@@ -18,7 +18,7 @@
 
       
       <input id="newStudentName" type="text" placeholder="Enter student's name">
-      <input id="newStudentScore" type="text" placeholder="enter student's score">
+      <input id="newStudentScore" type="number" placeholder="enter student's score">
 
       <button id="addStudentBtn">Add Student</button>
 
@@ -57,7 +57,9 @@
 
 
 
- const  students = [
+ const  students = 
+JSON.parse(localStorage.getItem('students')) ||
+ [
   { name: "Paul", score: 45 ,},
   { name: "Peter", score: 82 },
   { name: "Dave", score: 60 },
@@ -81,7 +83,7 @@ const  fruits = [
 
 
 
-students.push({ name: "Ade", score: 90 })
+
 const studentList = document.getElementById('studentList')
 const newStudentName = document.getElementById('newStudentName')
 const newStudentScore = document.getElementById('newStudentScore')
@@ -100,7 +102,10 @@ const report = document.getElementById('report')
 
 // }
 
+const passed = students.filter((student)=>student.score >= 50)
+
 const displayList = (array) => {
+  
     studentList.innerHTML = ''
 
     array.forEach((student, index) => {
@@ -118,11 +123,15 @@ const displayList = (array) => {
         deleteBtn.addEventListener('click', () => {
             students.splice(index, 1)
             displayList(students)
+            report.innerText = `${passed.length} students passed out of ${students.length}`
         })
 
         li.append(deleteBtn)
+        localStorage.setItem("students", JSON.stringify(students))
 
         studentList.append(li)
+        
+        
 
         
     })
@@ -131,33 +140,56 @@ const displayList = (array) => {
 
 displayList(students)
 
-const passed = students.filter((student)=>student.score >= 50)
-console.log(passed)
 
 report.innerText = `${passed.length} students passed out of ${students.length}`
 
-passBtn.addEventListener('click', ()=>{
-  displayList(passed)
-})
+
+ passBtn.addEventListener('click', () => {
+
+    if (passBtn.innerText === 'Passed Students') {
+        displayList(passed);
+        passBtn.innerText = 'all';
+    } else {
+        displayList(students);
+        passBtn.innerText = 'Passed Students';
+    }
+
+});
+
+
+
 
  
   const addNewStudent = (studentName,studentScore) => {
        studentName = newStudentName.value
         studentScore = Number(newStudentScore.value) 
+        
+
+        if(studentName.trim() == ''|| isNaN(studentScore)) return
+
     const newStudent = {
        name : studentName,
        score: studentScore
+       
     }
+
+      students.push(newStudent)
+      // const passed = students.filter((student)=>student.score >= 50)
+      report.innerText = `${passed.length} students passed out of ${students.length}`
+      
+      localStorage.setItem("students", JSON.stringify(students))
     
-   const allStudents = [...students,newStudent]
+  //  const allStudents = [...students,newStudent]
 
     
-    displayList(allStudents)
+    displayList(students)
+
+    
 
    newStudentName.value = ''
    newStudentScore.value = ''
 
-    report.innerText = `${passed.length} students passed out of ${allStudents.length}`
+   
    
   }
 
@@ -165,7 +197,15 @@ passBtn.addEventListener('click', ()=>{
 
   addStudentBtn.addEventListener('click',()=>{
     addNewStudent()
+    
   })
+
+  document.addEventListener('keydown',(event)=>{
+    if(event.key === 'Enter'){
+      addStudentBtn.click()
+    }
+  })
+
 
 
 
