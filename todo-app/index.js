@@ -1,43 +1,49 @@
-const toDolist = document.getElementById('toDo')
-const inputTask = document.getElementById('inputTask')
-const addTaskBtn = document.getElementById('addTaskBtn')
-const toDO = document.getElementById('toDO')
-
-let toDoListArray = []
-
-const displayTask = ()=>{
-    toDO.innerHTML = ""
-    toDoListArray.forEach((task)=>{
-        const li = document.createElement('li')
-        li.innerText = `${task.text}`
-        toDO.append(li)
-
-        const delBtn = document.createElement('button')
-        delBtn.innerText = 'del'
-        li.append(delBtn)
-    })
-
-}
-
-// const addNewTask = (task)=>{
-//     task = inputTask.value
-//         
-//     displayTask('task')
-// }
-
-addTaskBtn.addEventListener('click', ()=>{
-    if(inputTask.value.trim() === '') {return}
-
-    const newTodo = {
-        id :Date.now(),
-        text: inputTask.value.trim(),
-    }
-
-    toDoListArray = [...toDoListArray, newTodo]
-    displayTask()
-    inputTask.value = ''
-
-    
-})
+        const todoInput = document.getElementById('todoInput');
+         const addTodoBtn = document.getElementById('addTodoBtn');
+         const displayTodos = document.getElementById('displayTodos')
 
 
+         let todos = []
+
+         const listTodos = () => {
+             displayTodos.innerHTML =''
+
+            todos.forEach((todo)=>{
+                const li = document.createElement('li')
+                li.innerText = `${todo.text}`
+                displayTodos.append(li)
+
+                const delBtn = document.createElement('button');
+                delBtn.innerText = 'Del'
+                 li.append(delBtn)
+
+                 delBtn.addEventListener('click', ()=>{
+                    deleteTodo(todo.id)
+
+                 } )
+
+            })
+         }
+            
+
+         addTodoBtn.addEventListener('click', ()=>{
+            if(todoInput.value.trim()==='') return
+             
+            const newTodo = {
+                id:Date.now(),
+                text:todoInput.value.trim()
+            }
+
+            todos = [...todos, newTodo]
+
+            listTodos()
+
+            todoInput.value = ''
+
+        })
+
+
+        const deleteTodo = (id) => {
+            todos=todos.filter((todo)=> todo.id !== id)
+            listTodos()
+        }
