@@ -3,16 +3,18 @@ const inputTask = document.getElementById('inputTask')
 const addTaskBtn = document.getElementById('addTaskBtn')
 const toDO = document.getElementById('toDO')
 
-let toDoListArray = [
-
-]
+let toDoListArray = []
 
 const displayTask = ()=>{
     toDO.innerHTML = ""
-    array.forEach((task)=>{
+    toDoListArray.forEach((task)=>{
         const li = document.createElement('li')
         li.innerText = `${task.text}`
         toDO.append(li)
+
+        const delBtn = document.createElement('button')
+        delBtn.innerText = 'del'
+        li.append(delBtn)
     })
 
 }
@@ -33,6 +35,7 @@ addTaskBtn.addEventListener('click', ()=>{
 
     toDoListArray = [...toDoListArray, newTodo]
     displayTask()
+    inputTask.value = ''
 
     
 })
